@@ -2481,19 +2481,19 @@ function TripInfoSection({
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {tripInfo.currency.name && (
+              {tripInfo?.currency?.name && (
                 <div>
                   <p className="text-xs text-white/50 uppercase tracking-wide mb-1">Monnaie</p>
                   <p className="text-sm text-white/80 font-medium">{tripInfo.currency.name}</p>
                 </div>
               )}
-              {tripInfo.currency.exchangeRate && (
+              {tripInfo?.currency?.exchangeRate && (
                 <div className="bg-emerald-500/10 rounded-lg p-2">
                   <p className="text-xs text-white/50 uppercase tracking-wide mb-1">Taux de change</p>
                   <p className="text-sm text-emerald-300 font-mono">{tripInfo.currency.exchangeRate}</p>
                 </div>
               )}
-              {tripInfo.currency.paymentMethods?.length > 0 && (
+              {tripInfo?.currency?.paymentMethods?.length > 0 && (
                 <div>
                   <p className="text-xs text-white/50 uppercase tracking-wide mb-2">Moyens de paiement</p>
                   <div className="flex flex-wrap gap-2">
@@ -2503,13 +2503,27 @@ function TripInfoSection({
                   </div>
                 </div>
               )}
-              {tripInfo.currency.budget && (
+              {tripInfo?.currency?.budget && (
                 <div>
                   <p className="text-xs text-white/50 uppercase tracking-wide mb-1">Budget quotidien</p>
-                  <p className="text-sm text-white/80">{tripInfo.currency.budget}</p>
+                  {typeof tripInfo.currency.budget === 'string' ? (
+                    <p className="text-sm text-white/80">{tripInfo.currency.budget}</p>
+                  ) : (
+                    <div className="space-y-1">
+                      {tripInfo.currency.budget.backpacker && (
+                        <p className="text-sm text-white/80">🎒 Backpacker: {tripInfo.currency.budget.backpacker}</p>
+                      )}
+                      {tripInfo.currency.budget.midRange && (
+                        <p className="text-sm text-white/80">💼 Standard: {tripInfo.currency.budget.midRange}</p>
+                      )}
+                      {tripInfo.currency.budget.luxury && (
+                        <p className="text-sm text-white/80">✨ Confort: {tripInfo.currency.budget.luxury}</p>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
-              {tripInfo.currency.tippingGuide && (
+              {tripInfo?.currency?.tippingGuide && (
                 <div>
                   <p className="text-xs text-white/50 uppercase tracking-wide mb-1">Guide des pourboires</p>
                   <p className="text-sm text-white/70">{tripInfo.currency.tippingGuide}</p>
@@ -2521,7 +2535,7 @@ function TripInfoSection({
       </div>
 
       {/* PRICES - Enhanced */}
-      {hasContent(tripInfo.prices) && (
+      {hasContent(tripInfo?.prices) && (
         <Card className="glass-light border-white/10">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg text-white flex items-center gap-2">
@@ -2531,56 +2545,56 @@ function TripInfoSection({
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {tripInfo.prices.coffee && (
+              {tripInfo?.prices?.coffee && (
                 <div className="bg-white/5 rounded-lg p-3 text-center">
                   <span className="text-2xl">☕</span>
                   <p className="text-xs text-white/50 mt-1">Café</p>
                   <p className="text-sm font-medium text-white">{tripInfo.prices.coffee}</p>
                 </div>
               )}
-              {tripInfo.prices.meal && (
+              {tripInfo?.prices?.meal && (
                 <div className="bg-white/5 rounded-lg p-3 text-center">
                   <span className="text-2xl">🍽️</span>
                   <p className="text-xs text-white/50 mt-1">Repas simple</p>
                   <p className="text-sm font-medium text-white">{tripInfo.prices.meal}</p>
                 </div>
               )}
-              {tripInfo.prices.restaurant && (
+              {tripInfo?.prices?.restaurant && (
                 <div className="bg-white/5 rounded-lg p-3 text-center">
                   <span className="text-2xl">🥂</span>
                   <p className="text-xs text-white/50 mt-1">Restaurant</p>
                   <p className="text-sm font-medium text-white">{tripInfo.prices.restaurant}</p>
                 </div>
               )}
-              {tripInfo.prices.transport && (
+              {tripInfo?.prices?.transport && (
                 <div className="bg-white/5 rounded-lg p-3 text-center">
                   <span className="text-2xl">🚌</span>
                   <p className="text-xs text-white/50 mt-1">Transport</p>
                   <p className="text-sm font-medium text-white">{tripInfo.prices.transport}</p>
                 </div>
               )}
-              {tripInfo.prices.taxi && (
+              {tripInfo?.prices?.taxi && (
                 <div className="bg-white/5 rounded-lg p-3 text-center">
                   <span className="text-2xl">🚕</span>
                   <p className="text-xs text-white/50 mt-1">Taxi</p>
                   <p className="text-sm font-medium text-white">{tripInfo.prices.taxi}</p>
                 </div>
               )}
-              {tripInfo.prices.hotel && (
+              {tripInfo?.prices?.hotel && (
                 <div className="bg-white/5 rounded-lg p-3 text-center">
                   <span className="text-2xl">🏨</span>
                   <p className="text-xs text-white/50 mt-1">Hôtel/nuit</p>
                   <p className="text-sm font-medium text-white">{tripInfo.prices.hotel}</p>
                 </div>
               )}
-              {tripInfo.prices.museum && (
+              {tripInfo?.prices?.museum && (
                 <div className="bg-white/5 rounded-lg p-3 text-center">
                   <span className="text-2xl">🏛️</span>
                   <p className="text-xs text-white/50 mt-1">Musée</p>
                   <p className="text-sm font-medium text-white">{tripInfo.prices.museum}</p>
                 </div>
               )}
-              {tripInfo.prices.grocery && (
+              {tripInfo?.prices?.grocery && (
                 <div className="bg-white/5 rounded-lg p-3 text-center">
                   <span className="text-2xl">🛒</span>
                   <p className="text-xs text-white/50 mt-1">Courses</p>
@@ -2684,7 +2698,7 @@ function TripInfoSection({
       </div>
 
       {/* TRANSPORTATION */}
-      {hasContent(tripInfo.transportation) && (
+      {hasContent(tripInfo?.transportation) && (
         <Card className="glass-light border-white/10">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg text-white flex items-center gap-2">
@@ -2693,19 +2707,54 @@ function TripInfoSection({
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {tripInfo.transportation.fromAirport && (
+            {/* From Airport - handle both object and string formats */}
+            {tripInfo?.transportation?.fromAirport && (
               <div>
                 <p className="text-xs text-white/50 uppercase tracking-wide mb-1">Depuis l'aéroport</p>
-                <p className="text-sm text-white/80">{tripInfo.transportation.fromAirport}</p>
+                {typeof tripInfo.transportation.fromAirport === 'string' ? (
+                  <p className="text-sm text-white/80">{tripInfo.transportation.fromAirport}</p>
+                ) : tripInfo.transportation.fromAirport.options?.length > 0 ? (
+                  <div className="space-y-2">
+                    {tripInfo.transportation.fromAirport.options.map((opt: any, i: number) => (
+                      <div key={i} className="bg-white/5 rounded-lg p-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-medium text-white">{opt.type}</span>
+                          {opt.price && <span className="text-xs text-emerald-400">{opt.price}</span>}
+                          {opt.duration && <span className="text-xs text-white/50">({opt.duration})</span>}
+                        </div>
+                        {opt.details && <p className="text-xs text-white/60 mt-1">{opt.details}</p>}
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             )}
-            {tripInfo.transportation.localTransport && (
+            {/* Local Transport - handle both object and string formats */}
+            {tripInfo?.transportation?.localTransport && (
               <div>
                 <p className="text-xs text-white/50 uppercase tracking-wide mb-1">Transport local</p>
-                <p className="text-sm text-white/80">{tripInfo.transportation.localTransport}</p>
+                {typeof tripInfo.transportation.localTransport === 'string' ? (
+                  <p className="text-sm text-white/80">{tripInfo.transportation.localTransport}</p>
+                ) : (
+                  <div className="space-y-2">
+                    {tripInfo.transportation.localTransport.types?.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {tripInfo.transportation.localTransport.types.map((t: string, i: number) => (
+                          <Badge key={i} variant="secondary" className="bg-white/10 text-white/80">{t}</Badge>
+                        ))}
+                      </div>
+                    )}
+                    {tripInfo.transportation.localTransport.passes && (
+                      <p className="text-sm text-white/70">🎫 Pass: {tripInfo.transportation.localTransport.passes}</p>
+                    )}
+                    {tripInfo.transportation.localTransport.apps && (
+                      <p className="text-sm text-white/70">📱 Apps: {tripInfo.transportation.localTransport.apps}</p>
+                    )}
+                  </div>
+                )}
               </div>
             )}
-            {tripInfo.transportation.tips?.length > 0 && (
+            {tripInfo?.transportation?.tips?.length > 0 && (
               <div>
                 <p className="text-xs text-white/50 uppercase tracking-wide mb-2">Conseils transport</p>
                 <ul className="space-y-1">
@@ -2746,7 +2795,7 @@ function TripInfoSection({
 
       {/* Weather & Emergency */}
       <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
-        {hasContent(tripInfo.weather) && (
+        {hasContent(tripInfo?.weather) && (
           <Card className="glass-light border-white/10">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg text-white flex items-center gap-2">
@@ -2755,19 +2804,51 @@ function TripInfoSection({
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {tripInfo.weather.bestPeriod && (
+              {tripInfo?.weather?.bestPeriod && (
                 <div>
                   <p className="text-xs text-white/50 uppercase tracking-wide mb-1">Meilleure période</p>
                   <p className="text-sm text-white/80">{tripInfo.weather.bestPeriod}</p>
                 </div>
               )}
-              {tripInfo.weather.climateInfo && (
+              {/* Seasons - handle object format */}
+              {tripInfo?.weather?.seasons && (
+                <div>
+                  <p className="text-xs text-white/50 uppercase tracking-wide mb-2">Saisons</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {tripInfo.weather.seasons.spring && (
+                      <div className="bg-white/5 rounded-lg p-2">
+                        <p className="text-xs text-emerald-400 font-medium">🌸 Printemps</p>
+                        <p className="text-xs text-white/70">{tripInfo.weather.seasons.spring}</p>
+                      </div>
+                    )}
+                    {tripInfo.weather.seasons.summer && (
+                      <div className="bg-white/5 rounded-lg p-2">
+                        <p className="text-xs text-amber-400 font-medium">☀️ Été</p>
+                        <p className="text-xs text-white/70">{tripInfo.weather.seasons.summer}</p>
+                      </div>
+                    )}
+                    {tripInfo.weather.seasons.autumn && (
+                      <div className="bg-white/5 rounded-lg p-2">
+                        <p className="text-xs text-orange-400 font-medium">🍂 Automne</p>
+                        <p className="text-xs text-white/70">{tripInfo.weather.seasons.autumn}</p>
+                      </div>
+                    )}
+                    {tripInfo.weather.seasons.winter && (
+                      <div className="bg-white/5 rounded-lg p-2">
+                        <p className="text-xs text-sky-400 font-medium">❄️ Hiver</p>
+                        <p className="text-xs text-white/70">{tripInfo.weather.seasons.winter}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              {tripInfo?.weather?.climateInfo && (
                 <div>
                   <p className="text-xs text-white/50 uppercase tracking-wide mb-1">Info climat</p>
                   <p className="text-sm text-white/70">{tripInfo.weather.climateInfo}</p>
                 </div>
               )}
-              {tripInfo.weather.whatToPack?.length > 0 && (
+              {tripInfo?.weather?.whatToPack?.length > 0 && (
                 <div>
                   <p className="text-xs text-white/50 uppercase tracking-wide mb-2">À emporter</p>
                   <div className="flex flex-wrap gap-2">
@@ -2781,7 +2862,7 @@ function TripInfoSection({
           </Card>
         )}
 
-        {hasContent(tripInfo.emergency) && (
+        {hasContent(tripInfo?.emergency) && (
           <Card className="glass-light border-white/10 border-rose-500/20">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg text-white flex items-center gap-2">
@@ -2790,29 +2871,61 @@ function TripInfoSection({
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
+              {/* Emergency numbers - handle both formats */}
               <div className="grid grid-cols-2 gap-2">
-                {tripInfo.emergency.police && (
+                {(tripInfo?.emergency?.numbers?.police || tripInfo?.emergency?.police) && (
                   <div className="bg-white/5 rounded-lg p-2 text-center">
                     <span className="text-lg">🚔</span>
                     <p className="text-xs text-white/50">Police</p>
-                    <p className="text-sm font-medium text-white">{tripInfo.emergency.police}</p>
+                    <p className="text-sm font-medium text-white">{tripInfo.emergency.numbers?.police || tripInfo.emergency.police}</p>
                   </div>
                 )}
-                {tripInfo.emergency.ambulance && (
+                {(tripInfo?.emergency?.numbers?.ambulance || tripInfo?.emergency?.ambulance) && (
                   <div className="bg-white/5 rounded-lg p-2 text-center">
                     <span className="text-lg">🚑</span>
                     <p className="text-xs text-white/50">Ambulance</p>
-                    <p className="text-sm font-medium text-white">{tripInfo.emergency.ambulance}</p>
+                    <p className="text-sm font-medium text-white">{tripInfo.emergency.numbers?.ambulance || tripInfo.emergency.ambulance}</p>
+                  </div>
+                )}
+                {tripInfo?.emergency?.numbers?.fire && (
+                  <div className="bg-white/5 rounded-lg p-2 text-center">
+                    <span className="text-lg">🚒</span>
+                    <p className="text-xs text-white/50">Pompiers</p>
+                    <p className="text-sm font-medium text-white">{tripInfo.emergency.numbers.fire}</p>
+                  </div>
+                )}
+                {tripInfo?.emergency?.numbers?.general && (
+                  <div className="bg-white/5 rounded-lg p-2 text-center">
+                    <span className="text-lg">📞</span>
+                    <p className="text-xs text-white/50">Général</p>
+                    <p className="text-sm font-medium text-white">{tripInfo.emergency.numbers.general}</p>
                   </div>
                 )}
               </div>
-              {tripInfo.emergency.embassy && (
+              {/* Embassy - handle both formats */}
+              {(tripInfo?.emergency?.embassy || tripInfo?.emergency?.embassyAddress) && (
                 <div className="bg-white/5 rounded-lg p-2">
                   <p className="text-xs text-white/50 mb-1">🇫🇷 Ambassade de France</p>
-                  <p className="text-sm text-white/80">{tripInfo.emergency.embassy}</p>
+                  {typeof tripInfo.emergency.embassy === 'string' ? (
+                    <p className="text-sm text-white/80">{tripInfo.emergency.embassy}</p>
+                  ) : tripInfo.emergency.embassy ? (
+                    <div className="space-y-1">
+                      {tripInfo.emergency.embassy.address && (
+                        <p className="text-sm text-white/80">📍 {tripInfo.emergency.embassy.address}</p>
+                      )}
+                      {tripInfo.emergency.embassy.phone && (
+                        <p className="text-sm text-white/80">📞 {tripInfo.emergency.embassy.phone}</p>
+                      )}
+                      {tripInfo.emergency.embassy.hours && (
+                        <p className="text-xs text-white/60">🕐 {tripInfo.emergency.embassy.hours}</p>
+                      )}
+                    </div>
+                  ) : tripInfo.emergency.embassyAddress && (
+                    <p className="text-sm text-white/80">{tripInfo.emergency.embassyAddress}</p>
+                  )}
                 </div>
               )}
-              {tripInfo.emergency.usefulApps?.length > 0 && (
+              {tripInfo?.emergency?.usefulApps?.length > 0 && (
                 <div>
                   <p className="text-xs text-white/50 uppercase tracking-wide mb-2">Applications utiles</p>
                   <div className="space-y-1">
@@ -3686,8 +3799,15 @@ function TripEditor({
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Erreur inconnue' }));
-        throw new Error(errorData.error || 'Erreur lors de l\'enrichissement');
+        let errorMessage = 'Erreur lors de l\'enrichissement';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          // Si la réponse n'est pas du JSON valide
+          errorMessage = `Erreur serveur (${response.status})`;
+        }
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
