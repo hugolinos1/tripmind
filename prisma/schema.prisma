@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String?
+  name         String?
+  avatar       String?
+  language     String    @default("fr")
+  currency     String    @default("EUR")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  
+  sessions     Session[]
+  trips        Trip[]
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token        String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+}
+
+model Trip {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String
+  destinations    String   // JSON array of destinations
+  startDate       DateTime
+  endDate         DateTime
+  travelers       String   // JSON: { adults: number, children: number[], hasPets: boolean }
+  preferences     String   // JSON: { pace: number, budget: number, interests: string[], accessibility: boolean, dietary: string[], alreadyVisited: string[] }
+  status          String   @default("draft") // draft, active, completed, archived
+  shareToken      String?  @unique // For public sharing
+  deletedAt       DateTime? // Soft delete
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  days            Day[]
+}
+
+model Day {
+  id                   String   @id @default(cuid())
+  tripId               String
+  trip                 Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  date                 DateTime
+  orderIndex           Int
+  notes                String?
+  startLocationName    String?  // Lieu de départ
+  startLocationAddress String?
+  startLat             Float?
+  startLng             Float?
+  endLocationName      String?  // Lieu d'arrivée
+  endLocationAddress   String?
+  endLat               Float?
+  endLng               Float?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  
+  events               Event[]
+}
+
+model Event {
+  id                String   @id @default(cuid())
+  dayId             String
+  day               Day      @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  type              String   // visit, meal, transport, accommodation, free, activity
+  title             String
+  description       String?
+  startTime         String?  // HH:mm format
+  durationMinutes   Int?
+  locationName      String?
+  locationAddress   String?
+  lat               Float?
+  lng               Float?
+  photos            String   @default("[]") // JSON array of photo URLs
+  practicalInfo     String   @default("{}") // JSON: { openingHours, priceRange, website, tips, alternatives }
+  estimatedBudget   Float?
+  isAiEnriched      Boolean  @default(false)
+  sourceUrl         String?
+  attachments       String   @default("[]") // JSON array: [{ id, name, type, size, category, path, uploadedAt }]
+  orderIndex        Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  enrichments       Enrichment[]
+}
+
+model Enrichment {
+  id            String   @id @default(cuid())
+  eventId       String
+  event         Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  rawResponse   String   // JSON: full AI response
+  tokensUsed    Int?
+  createdAt     DateTime @default(now())
+}
