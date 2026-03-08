@@ -22,9 +22,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user already exists
-    const existingUser = await db.user.findUnique({
-      where: { email: email.toLowerCase() },
-    });
+    let existingUser;
+    try {
+      existingUser = await db.user.findUnique({
+        where: { email: email.toLowerCase() },
+      });
+    } catch (dbError) {
+      console.error('Database query error:', dbError);
+      return NextResponse.json(
+        { error: 'Erreur de connexion à la base de données. Vérifiez que les tables sont créées.' },
+        { status: 500 }
+      );
+    }
 
     if (existingUser) {
       return NextResponse.json(
@@ -79,8 +88,9 @@ export async function POST(request: NextRequest) {
     return response;
   } catch (error) {
     console.error('Signup error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Erreur lors de l\'inscription';
     return NextResponse.json(
-      { error: 'Erreur lors de l\'inscription' },
+      { error: errorMessage },
       { status: 500 }
     );
   }
